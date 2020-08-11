@@ -10,65 +10,40 @@ namespace RESTful_API.Controller
 {
     public class ListsController : ApiController
     {
-        List<TaskList> taskLists = new List<TaskList>
-        {
-            new TaskList{id = 1, name = "list 1" },
-            new TaskList{id = 2, name = "list 2"},
-            new TaskList{id = 3, name = "list 3"}
-        };
-
         // GET: api/list/1
         [HttpGet]
         public TaskList GetTaskList(int id)
         {
-            return taskLists.FirstOrDefault(t => t.id == id);
+            return new TaskList { };
         }
 
         //GET: api/list
         [HttpGet]
         public IEnumerable<TaskList> GetTaskLists()
         {
-            return taskLists;
+            return new List<TaskList> { };
         }
 
         // POST: api/list
         [HttpPost]
         public IHttpActionResult AddNewTaskList([FromBody] TaskList task)
         {
-            taskLists.Add(task);
-            return Ok(taskLists);
+           
+            return Ok();
         }
 
         // PUT: api/list/3
         [HttpPut]
         public IHttpActionResult UpdateTaskList(int Id, string name)
         {
-            TaskList newTask = taskLists.FirstOrDefault(test => test.id == Id);
-            if (newTask == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                newTask.name = name;
-                return Ok(taskLists);
-            }
+            return Ok();
         }
 
         // DELETE: api/list/2
         [HttpDelete]
         public IHttpActionResult DeleteTaskList(int id)
         {
-            TaskList taskDelete = taskLists.FirstOrDefault(t => t.id == id);
-            if (taskDelete == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                taskLists.Remove(taskDelete);
-                return Ok(taskLists);
-            }
+            return Ok();
         }
     }
 }
