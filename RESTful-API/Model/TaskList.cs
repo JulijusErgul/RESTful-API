@@ -10,6 +10,7 @@ namespace RESTful_API.Model
         public int TaskListId { get; set; }
         public string TaskListName { get; set; }
         public string TaskListDescription { get; set; }
-        
+        public int UserId { get; set; }
+
     }
 }

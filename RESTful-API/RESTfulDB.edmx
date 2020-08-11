@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LIST">
+          <Key>
+            <PropertyRef Name="LISTID" />
+          </Key>
+          <Property Name="LISTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LISTNAME" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="LISTDESCRIPTION" Type="nchar" MaxLength="255" />
+          <Property Name="FK_USER_LIST" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TODOTASK">
+          <Key>
+            <PropertyRef Name="TASKID" />
+          </Key>
+          <Property Name="TASKID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TASKNAME" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="TASKDESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="TASKSTATUS" Type="bit" Nullable="false" />
+          <Property Name="FK_TASK_USER" Type="int" Nullable="false" />
+          <Property Name="FK_TASK_LIST" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="USERPASSWORD" Type="nchar" MaxLength="75" Nullable="false" />
+          <Property Name="USERIMAGE" Type="nchar" MaxLength="75" />
+        </EntityType>
+        <Association Name="FK_LIST_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="LIST" Type="Self.LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="LIST">
+              <PropertyRef Name="FK_USER_LIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOTASK_LIST">
+          <End Role="LIST" Type="Self.LIST" Multiplicity="1" />
+          <End Role="TODOTASK" Type="Self.TODOTASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIST">
+              <PropertyRef Name="LISTID" />
+            </Principal>
+            <Dependent Role="TODOTASK">
+              <PropertyRef Name="FK_TASK_LIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOTASK_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="TODOTASK" Type="Self.TODOTASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="TODOTASK">
+              <PropertyRef Name="FK_TASK_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="LIST" EntityType="Self.LIST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TODOTASK" EntityType="Self.TODOTASK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LIST_USER" Association="Self.FK_LIST_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="LIST" EntitySet="LIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOTASK_LIST" Association="Self.FK_TODOTASK_LIST">
+            <End Role="LIST" EntitySet="LIST" />
+            <End Role="TODOTASK" EntitySet="TODOTASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOTASK_USER" Association="Self.FK_TODOTASK_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TODOTASK" EntitySet="TODOTASK" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LIST">
+          <Key>
+            <PropertyRef Name="LISTID" />
+          </Key>
+          <Property Name="LISTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LISTNAME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LISTDESCRIPTION" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <Property Name="FK_USER_LIST" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="USER" Relationship="Self.FK_LIST_USER" FromRole="LIST" ToRole="USER" />
+          <NavigationProperty Name="TODOTASK" Relationship="Self.FK_TODOTASK_LIST" FromRole="LIST" ToRole="TODOTASK" />
+        </EntityType>
+        <EntityType Name="TODOTASK">
+          <Key>
+            <PropertyRef Name="TASKID" />
+          </Key>
+          <Property Name="TASKID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TASKNAME" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TASKDESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TASKSTATUS" Type="Boolean" Nullable="false" />
+          <Property Name="FK_TASK_USER" Type="Int32" Nullable="false" />
+          <Property Name="FK_TASK_LIST" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LIST" Relationship="Self.FK_TODOTASK_LIST" FromRole="TODOTASK" ToRole="LIST" />
+          <NavigationProperty Name="USER" Relationship="Self.FK_TODOTASK_USER" FromRole="TODOTASK" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="USERPASSWORD" Type="String" MaxLength="75" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USERIMAGE" Type="String" MaxLength="75" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="LIST" Relationship="Self.FK_LIST_USER" FromRole="USER" ToRole="LIST" />
+          <NavigationProperty Name="TODOTASK" Relationship="Self.FK_TODOTASK_USER" FromRole="USER" ToRole="TODOTASK" />
+        </EntityType>
+        <Association Name="FK_LIST_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="LIST" Type="Self.LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="LIST">
+              <PropertyRef Name="FK_USER_LIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOTASK_LIST">
+          <End Role="LIST" Type="Self.LIST" Multiplicity="1" />
+          <End Role="TODOTASK" Type="Self.TODOTASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LIST">
+              <PropertyRef Name="LISTID" />
+            </Principal>
+            <Dependent Role="TODOTASK">
+              <PropertyRef Name="FK_TASK_LIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TODOTASK_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="TODOTASK" Type="Self.TODOTASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="TODOTASK">
+              <PropertyRef Name="FK_TASK_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LIST" EntityType="Self.LIST" />
+          <EntitySet Name="TODOTASK" EntityType="Self.TODOTASK" />
+          <EntitySet Name="USER" EntityType="Self.USER" />
+          <AssociationSet Name="FK_LIST_USER" Association="Self.FK_LIST_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="LIST" EntitySet="LIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOTASK_LIST" Association="Self.FK_TODOTASK_LIST">
+            <End Role="LIST" EntitySet="LIST" />
+            <End Role="TODOTASK" EntitySet="TODOTASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TODOTASK_USER" Association="Self.FK_TODOTASK_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TODOTASK" EntitySet="TODOTASK" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="LIST">
+            <EntityTypeMapping TypeName="Model.LIST">
+              <MappingFragment StoreEntitySet="LIST">
+                <ScalarProperty Name="LISTID" ColumnName="LISTID" />
+                <ScalarProperty Name="LISTNAME" ColumnName="LISTNAME" />
+                <ScalarProperty Name="LISTDESCRIPTION" ColumnName="LISTDESCRIPTION" />
+                <ScalarProperty Name="FK_USER_LIST" ColumnName="FK_USER_LIST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TODOTASK">
+            <EntityTypeMapping TypeName="Model.TODOTASK">
+              <MappingFragment StoreEntitySet="TODOTASK">
+                <ScalarProperty Name="TASKID" ColumnName="TASKID" />
+                <ScalarProperty Name="TASKNAME" ColumnName="TASKNAME" />
+                <ScalarProperty Name="TASKDESCRIPTION" ColumnName="TASKDESCRIPTION" />
+                <ScalarProperty Name="TASKSTATUS" ColumnName="TASKSTATUS" />
+                <ScalarProperty Name="FK_TASK_USER" ColumnName="FK_TASK_USER" />
+                <ScalarProperty Name="FK_TASK_LIST" ColumnName="FK_TASK_LIST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER">
+            <EntityTypeMapping TypeName="Model.USER">
+              <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="USERPASSWORD" ColumnName="USERPASSWORD" />
+                <ScalarProperty Name="USERIMAGE" ColumnName="USERIMAGE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

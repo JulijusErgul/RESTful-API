@@ -11,5 +11,7 @@ namespace RESTful_API.Model
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public bool TaskStatus { get; set; }
+        public int ListId { get; set; }
+        public int UserId { get; set; }
     }
 }
