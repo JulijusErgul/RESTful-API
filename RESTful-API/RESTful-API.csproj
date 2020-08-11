@@ -102,7 +102,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\AutoMapperConfig.cs" />
+    <Compile Include="Configuration\AutoMapper.cs" />
     <Compile Include="Configuration\RESTfulAPIConfig.cs" />
     <Compile Include="Controller\ListsController.cs" />
     <Compile Include="Controller\TasksController.cs" />
@@ -131,6 +131,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RestDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Support\ETask.cs" />
+    <Compile Include="Support\ETaskList.cs" />
+    <Compile Include="Support\EUserAccount.cs" />
     <Compile Include="TASK.cs">
       <DependentUpon>RestDBModel.tt</DependentUpon>
     </Compile>

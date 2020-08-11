@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using RESTful_API.Support;
+using RESTful_API.Configuration;
+using AutoMapper;
 
 namespace RESTful_API.Model
 {
@@ -15,22 +18,31 @@ namespace RESTful_API.Model
         public List<Task> Tasks { get; set; }
         public List<TaskList> TaskLists { get; set; }
 
+        static private EUserAccount _eUserAccount = new EUserAccount();
 
-        public static USER_ACCOUNT Read(int UserId)
+        public User GetUser(int UserId)
         {
-            using(var db = new RESTfulDBEntities())
-            {
-                return db.USER_ACCOUNT.FirstOrDefault(x => x.USERACCOUNTID == UserId);
-            }
+            USER_ACCOUNT user_account = _eUserAccount.Read(UserId);
+            User userObj = Mapper.Map<User>(user_account);
+            return userObj;
         }
 
-        public List<USER_ACCOUNT> List()
+        public List<User> GetUserList()
         {
-            using (var db = new RESTfulDBEntities())
+            return Mapper.Map<List<USER_ACCOUNT>, List<User>>(_eUserAccount.List());
+        }
+
+        public bool AddUser(User userObj)
+        {
+            bool created = _eUserAccount.Add(Mapper.Map<USER_ACCOUNT>(userObj));
+
+            if(created == true)
             {
-                db.USER_ACCOUNT.Load();
-                var query = db.USER_ACCOUNT.OrderBy(x => x.USERACCOUNTID);
-                return query.ToList();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

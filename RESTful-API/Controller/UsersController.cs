@@ -11,40 +11,47 @@ namespace RESTful_API.Controller
 {
     public class UsersController : ApiController
     {
-        // GET: api/list/1
+        // GET: api/user/1
         [HttpGet]
         public User GetUser(int id)
         {
-            //return userLists.FirstOrDefault(t => t.id == id);
-            User userObj = new User();
-            return new User { };
+            User user = new User();
+            return user.GetUser(id);
         }
 
-        //GET: api/list
+        //GET: api/user
         [HttpGet]
         public IEnumerable<User> GetUser()
         {
-            List<User> users = new List<User>();
+            User user = new User();
+            List<User> users = user.GetUserList();
             return users;
-            //return userLists;
-            
         }
 
-        // POST: api/list
+        // POST: api/user
         [HttpPost]
-        public IHttpActionResult AddNewUser([FromBody] User task)
+        public IHttpActionResult AddNewUser([FromBody] User user)
         {
-            return Ok();
+            User userObj = new User();
+            bool created = userObj.AddUser(user);
+            if (created)
+            {
+                return StatusCode(HttpStatusCode.Created);
+            }
+            else
+            {
+                return InternalServerError();
+            }
         }
 
-        // PUT: api/list/3
+        // PUT: api/user/3
         [HttpPut]
         public IHttpActionResult UpdateUser(int Id, string name)
         {         
             return Ok();  
         }
 
-        // DELETE: api/list/2
+        // DELETE: api/user/2
         [HttpDelete]
         public IHttpActionResult DeleteUser(int id)
         {

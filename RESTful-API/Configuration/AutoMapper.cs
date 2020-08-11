@@ -7,7 +7,7 @@ using RESTful_API.Model;
 
 namespace RESTful_API.Configuration
 {
-    public class AutoMapperConfig
+    public class AutoMapper
     {
         public static void Configure()
         {
