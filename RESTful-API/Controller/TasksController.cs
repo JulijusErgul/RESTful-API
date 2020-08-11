@@ -5,14 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Results;
+using RESTful_API.Model;
 
 namespace RESTful_API.Controller
 {
-    public class Task
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-    }
     public class TasksController : ApiController
     {
         List<Task> tasks = new List<Task>

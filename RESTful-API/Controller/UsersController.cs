@@ -4,14 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using RESTful_API.Model;
 
 namespace RESTful_API.Controller
 {
-    public class User
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-    }
     public class UsersController : ApiController
     {
         List<User> userLists = new List<User>
