@@ -89,6 +89,12 @@
     <Content Include="RESTfulDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RESTfulDB.Context.cs</LastGenOutput>
+      <DependentUpon>RESTfulDB.edmx</DependentUpon>
+    </Content>
+    <Content Include="RESTfulDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RESTfulDB.edmx</DependentUpon>
+      <LastGenOutput>RESTfulDB.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
   </ItemGroup>
@@ -97,8 +103,12 @@
     <Compile Include="Controller\ListsController.cs" />
     <Compile Include="Controller\TasksController.cs" />
     <Compile Include="Controller\UsersController.cs" />
+    <Compile Include="DataSource.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="LIST.cs">
+      <DependentUpon>RESTfulDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\TaskList.cs" />
@@ -109,10 +119,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RESTfulDB.Context.tt</DependentUpon>
     </Compile>
+    <Compile Include="RESTfulDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RESTfulDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="RESTfulDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RESTfulDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Shared.cs" />
+    <Compile Include="TODOTASK.cs">
+      <DependentUpon>RESTfulDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USER.cs">
+      <DependentUpon>RESTfulDB.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -121,9 +143,9 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>RESTfulDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="RESTfulDB.edmx.diagram">
+    <Content Include="RESTfulDB.edmx.diagram">
       <DependentUpon>RESTfulDB.edmx</DependentUpon>
-    </None>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
