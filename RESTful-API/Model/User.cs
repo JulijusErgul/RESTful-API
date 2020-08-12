@@ -45,5 +45,18 @@ namespace RESTful_API.Model
                 return false;
             }
         }
+
+        public bool DeleteUser(User userObj)
+        {
+            bool deleted = _eUserAccount.Delete(Mapper.Map<USER_ACCOUNT>(userObj));
+            if ( deleted)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

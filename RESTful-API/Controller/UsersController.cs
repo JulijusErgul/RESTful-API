@@ -55,7 +55,16 @@ namespace RESTful_API.Controller
         [HttpDelete]
         public IHttpActionResult DeleteUser(int id)
         {
-            return Ok();
+            User user = new User();
+            if (user.DeleteUser(user.GetUser(id)))
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
         }
     }
 }

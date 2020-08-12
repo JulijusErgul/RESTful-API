@@ -67,5 +67,27 @@ namespace RESTful_API.Support
             }
         }
 
+        public bool Delete(USER_ACCOUNT user_accountObj)
+        {
+            using(var db = new RESTfulDBEntities())
+            {
+                using(DbContextTransaction transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        _userAccountObj = db.USER_ACCOUNT.Find(user_accountObj.USERACCOUNTID);
+                        db.USER_ACCOUNT.Remove(_userAccountObj);
+                        Shared.save(db);
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        return false;
+                    }
+                }
+            }
+        }
     }
 }
