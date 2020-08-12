@@ -21,7 +21,7 @@ namespace RESTful_API.Controller
 
         //GET: api/user
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUsers()
         {
             User user = new User();
             List<User> users = user.GetUserList();
@@ -30,9 +30,13 @@ namespace RESTful_API.Controller
 
         // POST: api/user
         [HttpPost]
-        public IHttpActionResult AddNewUser([FromBody] User user)
+        public IHttpActionResult Register([FromBody] User user)
         {
             User userObj = new User();
+
+            string hashedPassword = SecurePasswordHasher.Hash(user.UserPassword);
+            user.UserPassword = hashedPassword;
+
             bool created = userObj.AddUser(user);
             if (created)
             {
@@ -46,9 +50,22 @@ namespace RESTful_API.Controller
 
         // PUT: api/user/3
         [HttpPut]
-        public IHttpActionResult UpdateUser(int Id, string name)
-        {         
-            return Ok();  
+        public IHttpActionResult UpdateUser(int Id, [FromBody]User newUserObj)
+        {
+            User user = new User();
+            if(Id < 0)
+            {
+                return StatusCode(HttpStatusCode.NotFound);
+            }
+            else if(user.UpdateUser(Id, newUserObj))
+            {
+                return StatusCode(HttpStatusCode.OK);
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+            
         }
 
         // DELETE: api/user/2
@@ -62,7 +79,7 @@ namespace RESTful_API.Controller
             }
             else
             {
-                return StatusCode(HttpStatusCode.BadRequest);
+                return StatusCode(HttpStatusCode.NotFound);
             }
 
         }

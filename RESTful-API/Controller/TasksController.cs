@@ -15,35 +15,57 @@ namespace RESTful_API.Controller
         [HttpGet]
         public Task Get(int id)
         {
-            return new Task { };
+            return new Task().GetTask(id);
         }
 
         //GET: api/task
         [HttpGet]
-        public IEnumerable<Task> GetTask()
+        public IEnumerable<Task> GetTasks()
         {
-            return new List<Task> { };
+            return new List<Task>().GetTasksList();
         }
 
         // POST: api/task
         [HttpPost]
         public IHttpActionResult AddNewTask([FromBody] Task task)
         {
-            return Ok();
+            bool created = new Task().AddTask(task);
+            if (created)
+                return StatusCode(HttpStatusCode.Created);
+            else
+                return StatusCode(HttpStatusCode.InternalServerError);
         }
 
         // PUT: api/task/3
         [HttpPut]
-        public IHttpActionResult UpdateTask(int Id, string name)
+        public IHttpActionResult UpdateTask(int Id, [FromBody] Task newTaskObj)
         {
-            return Ok();
+            if (Id < 0)
+            {
+                return StatusCode(HttpStatusCode.NotFound);
+            }
+            else if (new Task().UpdateTask(Id, newTaskObj))
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
         }
 
         // DELETE: api/task/2
         [HttpDelete]
         public IHttpActionResult DeleteTask(int id)
         {
-            return Ok();
+            if(new Task().DeleteTask(new Task().GetTask(id)))
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.NotFound);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using RESTful_API.Model;
+using System.Security.Cryptography.X509Certificates;
 
 namespace RESTful_API.Support
 {
@@ -86,6 +87,23 @@ namespace RESTful_API.Support
                         transaction.Rollback();
                         return false;
                     }
+                }
+            }
+        }
+        public bool Update(USER_ACCOUNT newUser)
+        {
+            using(var db = new RESTfulDBEntities())
+            {
+                try
+                {
+                    db.USER_ACCOUNT.Attach(newUser);
+                    db.Entry(newUser).State = EntityState.Modified;
+                    Shared.save(db);
+                    return true;
+                }
+                catch
+                {
+                    return false;
                 }
             }
         }

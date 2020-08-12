@@ -6,13 +6,17 @@ using System.Data.Entity;
 using RESTful_API.Support;
 using RESTful_API.Configuration;
 using AutoMapper;
+using System.ComponentModel.DataAnnotations;
+using System.Web.UI.WebControls;
 
 namespace RESTful_API.Model
 {
     public class User
     {
         public int UserId { get; set; }
+        [Required]
         public string UserName { get; set; }
+        [Required]
         public string UserPassword { get; set; }
         public string UserImage { get; set; }
         public List<Task> Tasks { get; set; }
@@ -50,6 +54,22 @@ namespace RESTful_API.Model
         {
             bool deleted = _eUserAccount.Delete(Mapper.Map<USER_ACCOUNT>(userObj));
             if ( deleted)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateUser(int id, User newUserObj)
+        {
+            User temp = new User().GetUser(id);
+            temp = newUserObj;
+            
+            bool updated = _eUserAccount.Update(Mapper.Map<USER_ACCOUNT>(temp));
+            if (updated)
             {
                 return true;
             }
