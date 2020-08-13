@@ -13,10 +13,10 @@ namespace RESTful_API
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Entities : DbContext
+    public partial class RESTfulDBEntities : DbContext
     {
-        public Entities()
-            : base("name=Entities")
+        public RESTfulDBEntities()
+            : base("name=RESTfulDBEntities")
         {
         }
     
@@ -25,8 +25,8 @@ namespace RESTful_API
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<LIST> LIST { get; set; }
-        public virtual DbSet<TODOTASK> TODOTASK { get; set; }
-        public virtual DbSet<USER> USER { get; set; }
+        public virtual DbSet<TASK> TASK { get; set; }
+        public virtual DbSet<TASKLIST> TASKLIST { get; set; }
+        public virtual DbSet<USER_ACCOUNT> USER_ACCOUNT { get; set; }
     }
 }

@@ -7,5 +7,12 @@ namespace RESTful_API
 {
     public class DataSource
     {
+        static public string getConnectionString(string name)
+        {
+            return System.Web.Configuration
+                .WebConfigurationManager
+                .ConnectionStrings["RESTfulDBEntities"]
+                .ConnectionString;
+        }
     }
 }

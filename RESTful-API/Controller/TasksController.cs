@@ -11,48 +11,46 @@ namespace RESTful_API.Controller
 {
     public class TasksController : ApiController
     {
-        List<Task> tasks = new List<Task>
-        {
-            new Task{id = 1, name = "string 1" },
-            new Task{id = 2, name = "string 2"},
-            new Task{id = 3, name = "string 3"}
-        };
-
         // GET: api/task/1
         [HttpGet]
         public Task Get(int id)
         {
-            return tasks.FirstOrDefault(t => t.id == id);
+            return new Task().GetTask(id);
         }
 
         //GET: api/task
         [HttpGet]
-        public IEnumerable<Task> GetTask()
+        public IEnumerable<Task> GetTasks()
         {
-            return tasks;
+            return new List<Task>().GetTasksList();
         }
 
         // POST: api/task
         [HttpPost]
         public IHttpActionResult AddNewTask([FromBody] Task task)
         {
-            tasks.Add(task);
-            return Ok(tasks);
+            bool created = new Task().AddTask(task);
+            if (created)
+                return StatusCode(HttpStatusCode.Created);
+            else
+                return StatusCode(HttpStatusCode.InternalServerError);
         }
 
         // PUT: api/task/3
         [HttpPut]
-        public IHttpActionResult UpdateTask(int Id, string name)
+        public IHttpActionResult UpdateTask(int Id, [FromBody] Task newTaskObj)
         {
-            Task newTask = tasks.FirstOrDefault(test => test.id == Id);
-            if(newTask == null)
+            if (Id < 0)
             {
-                return NotFound();
+                return StatusCode(HttpStatusCode.NotFound);
+            }
+            else if (new Task().UpdateTask(Id, newTaskObj))
+            {
+                return Ok();
             }
             else
             {
-                newTask.name = name;
-                return Ok(tasks);
+                return StatusCode(HttpStatusCode.InternalServerError);
             }
         }
 
@@ -60,15 +58,13 @@ namespace RESTful_API.Controller
         [HttpDelete]
         public IHttpActionResult DeleteTask(int id)
         {
-            Task taskDelete = tasks.FirstOrDefault(t => t.id == id);
-            if(taskDelete == null)
+            if(new Task().DeleteTask(new Task().GetTask(id)))
             {
-                return NotFound();
+                return Ok();
             }
             else
             {
-                tasks.Remove(taskDelete);
-                return Ok(tasks);
+                return StatusCode(HttpStatusCode.NotFound);
             }
         }
     }

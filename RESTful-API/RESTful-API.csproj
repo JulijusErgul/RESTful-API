@@ -42,6 +42,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -86,44 +89,71 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="RESTfulDB.Context.tt">
+    <Content Include="RestDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>RESTfulDB.Context.cs</LastGenOutput>
+      <DependentUpon>RestDBModel.edmx</DependentUpon>
+      <LastGenOutput>RestDBModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="RestDBModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>RestDBModel.edmx</DependentUpon>
+      <LastGenOutput>RestDBModel.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\AutoMapper.cs" />
     <Compile Include="Configuration\RESTfulAPIConfig.cs" />
     <Compile Include="Controller\ListsController.cs" />
     <Compile Include="Controller\TasksController.cs" />
     <Compile Include="Controller\UsersController.cs" />
+    <Compile Include="DataSource.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\SecurePasswordHasher.cs" />
+    <Compile Include="Model\Shared.cs" />
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\TaskList.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RESTfulDB.Context.cs">
+    <Compile Include="RestDBModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RESTfulDB.Context.tt</DependentUpon>
+      <DependentUpon>RestDBModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="RESTfulDB.Designer.cs">
+    <Compile Include="RestDBModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RESTfulDB.edmx</DependentUpon>
+      <DependentUpon>RestDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RestDBModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RestDBModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Support\ETask.cs" />
+    <Compile Include="Support\ETaskList.cs" />
+    <Compile Include="Support\EUserAccount.cs" />
+    <Compile Include="TASK.cs">
+      <DependentUpon>RestDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TASKLIST.cs">
+      <DependentUpon>RestDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="USER_ACCOUNT.cs">
+      <DependentUpon>RestDBModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <EntityDeploy Include="RESTfulDB.edmx">
+    <EntityDeploy Include="RestDBModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RESTfulDB.Designer.cs</LastGenOutput>
+      <LastGenOutput>RestDBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="RESTfulDB.edmx.diagram">
-      <DependentUpon>RESTfulDB.edmx</DependentUpon>
-    </None>
+    <Content Include="RestDBModel.edmx.diagram">
+      <DependentUpon>RestDBModel.edmx</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

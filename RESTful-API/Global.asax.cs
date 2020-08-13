@@ -15,6 +15,7 @@ namespace RESTful_API
         protected void Application_Start(object sender, EventArgs e)
         {
             GlobalConfiguration.Configure(RESTfulAPIConfig.Register);
+            Configuration.AutoMapper.Configure();
         }
 
         protected void Session_Start(object sender, EventArgs e)

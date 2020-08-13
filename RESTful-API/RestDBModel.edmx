@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RESTfulDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TASK">
+          <Key>
+            <PropertyRef Name="TASKID" />
+          </Key>
+          <Property Name="TASKID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TASKNAME" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="TASKDESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="TASKSTATUS" Type="bit" Nullable="false" />
+          <Property Name="FK_USER_TASK" Type="int" Nullable="false" />
+          <Property Name="FK_TASKLIST_TASK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TASKLIST">
+          <Key>
+            <PropertyRef Name="TASKLISTID" />
+          </Key>
+          <Property Name="TASKLISTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TASKLISTNAME" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="TASKLISTDESCRIPTION" Type="nvarchar(max)" />
+          <Property Name="FK_USER_TASKLIST" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USER_ACCOUNT">
+          <Key>
+            <PropertyRef Name="USERACCOUNTID" />
+          </Key>
+          <Property Name="USERACCOUNTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="nchar" MaxLength="25" Nullable="false" />
+          <Property Name="USERPASSWORD" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="USERIMAGE" Type="nchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_TASK_TASKLIST">
+          <End Role="TASKLIST" Type="Self.TASKLIST" Multiplicity="1" />
+          <End Role="TASK" Type="Self.TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TASKLIST">
+              <PropertyRef Name="TASKLISTID" />
+            </Principal>
+            <Dependent Role="TASK">
+              <PropertyRef Name="FK_TASKLIST_TASK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASK_USER_ACCOUNT">
+          <End Role="USER_ACCOUNT" Type="Self.USER_ACCOUNT" Multiplicity="1" />
+          <End Role="TASK" Type="Self.TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER_ACCOUNT">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Principal>
+            <Dependent Role="TASK">
+              <PropertyRef Name="FK_USER_TASK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASKLIST_USER_ACCOUNT">
+          <End Role="USER_ACCOUNT" Type="Self.USER_ACCOUNT" Multiplicity="1" />
+          <End Role="TASKLIST" Type="Self.TASKLIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER_ACCOUNT">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Principal>
+            <Dependent Role="TASKLIST">
+              <PropertyRef Name="FK_USER_TASKLIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RESTfulDBModelStoreContainer">
+          <EntitySet Name="TASK" EntityType="Self.TASK" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TASKLIST" EntityType="Self.TASKLIST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER_ACCOUNT" EntityType="Self.USER_ACCOUNT" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TASK_TASKLIST" Association="Self.FK_TASK_TASKLIST">
+            <End Role="TASKLIST" EntitySet="TASKLIST" />
+            <End Role="TASK" EntitySet="TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASK_USER_ACCOUNT" Association="Self.FK_TASK_USER_ACCOUNT">
+            <End Role="USER_ACCOUNT" EntitySet="USER_ACCOUNT" />
+            <End Role="TASK" EntitySet="TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASKLIST_USER_ACCOUNT" Association="Self.FK_TASKLIST_USER_ACCOUNT">
+            <End Role="USER_ACCOUNT" EntitySet="USER_ACCOUNT" />
+            <End Role="TASKLIST" EntitySet="TASKLIST" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RESTfulDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TASK">
+          <Key>
+            <PropertyRef Name="TASKID" />
+          </Key>
+          <Property Name="TASKID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TASKNAME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TASKDESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TASKSTATUS" Type="Boolean" Nullable="false" />
+          <Property Name="FK_USER_TASK" Type="Int32" Nullable="false" />
+          <Property Name="FK_TASKLIST_TASK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TASKLIST" Relationship="Self.FK_TASK_TASKLIST" FromRole="TASK" ToRole="TASKLIST" />
+          <NavigationProperty Name="USER_ACCOUNT" Relationship="Self.FK_TASK_USER_ACCOUNT" FromRole="TASK" ToRole="USER_ACCOUNT" />
+        </EntityType>
+        <EntityType Name="TASKLIST">
+          <Key>
+            <PropertyRef Name="TASKLISTID" />
+          </Key>
+          <Property Name="TASKLISTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TASKLISTNAME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TASKLISTDESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FK_USER_TASKLIST" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TASK" Relationship="Self.FK_TASK_TASKLIST" FromRole="TASKLIST" ToRole="TASK" />
+          <NavigationProperty Name="USER_ACCOUNT" Relationship="Self.FK_TASKLIST_USER_ACCOUNT" FromRole="TASKLIST" ToRole="USER_ACCOUNT" />
+        </EntityType>
+        <EntityType Name="USER_ACCOUNT">
+          <Key>
+            <PropertyRef Name="USERACCOUNTID" />
+          </Key>
+          <Property Name="USERACCOUNTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="25" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USERPASSWORD" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="USERIMAGE" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TASK" Relationship="Self.FK_TASK_USER_ACCOUNT" FromRole="USER_ACCOUNT" ToRole="TASK" />
+          <NavigationProperty Name="TASKLIST" Relationship="Self.FK_TASKLIST_USER_ACCOUNT" FromRole="USER_ACCOUNT" ToRole="TASKLIST" />
+        </EntityType>
+        <Association Name="FK_TASK_TASKLIST">
+          <End Role="TASKLIST" Type="Self.TASKLIST" Multiplicity="1" />
+          <End Role="TASK" Type="Self.TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TASKLIST">
+              <PropertyRef Name="TASKLISTID" />
+            </Principal>
+            <Dependent Role="TASK">
+              <PropertyRef Name="FK_TASKLIST_TASK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASK_USER_ACCOUNT">
+          <End Role="USER_ACCOUNT" Type="Self.USER_ACCOUNT" Multiplicity="1" />
+          <End Role="TASK" Type="Self.TASK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER_ACCOUNT">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Principal>
+            <Dependent Role="TASK">
+              <PropertyRef Name="FK_USER_TASK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TASKLIST_USER_ACCOUNT">
+          <End Role="USER_ACCOUNT" Type="Self.USER_ACCOUNT" Multiplicity="1" />
+          <End Role="TASKLIST" Type="Self.TASKLIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER_ACCOUNT">
+              <PropertyRef Name="USERACCOUNTID" />
+            </Principal>
+            <Dependent Role="TASKLIST">
+              <PropertyRef Name="FK_USER_TASKLIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RESTfulDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TASK" EntityType="Self.TASK" />
+          <EntitySet Name="TASKLIST" EntityType="Self.TASKLIST" />
+          <EntitySet Name="USER_ACCOUNT" EntityType="Self.USER_ACCOUNT" />
+          <AssociationSet Name="FK_TASK_TASKLIST" Association="Self.FK_TASK_TASKLIST">
+            <End Role="TASKLIST" EntitySet="TASKLIST" />
+            <End Role="TASK" EntitySet="TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASK_USER_ACCOUNT" Association="Self.FK_TASK_USER_ACCOUNT">
+            <End Role="USER_ACCOUNT" EntitySet="USER_ACCOUNT" />
+            <End Role="TASK" EntitySet="TASK" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TASKLIST_USER_ACCOUNT" Association="Self.FK_TASKLIST_USER_ACCOUNT">
+            <End Role="USER_ACCOUNT" EntitySet="USER_ACCOUNT" />
+            <End Role="TASKLIST" EntitySet="TASKLIST" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RESTfulDBModelStoreContainer" CdmEntityContainer="RESTfulDBEntities">
+          <EntitySetMapping Name="TASK">
+            <EntityTypeMapping TypeName="RESTfulDBModel.TASK">
+              <MappingFragment StoreEntitySet="TASK">
+                <ScalarProperty Name="TASKID" ColumnName="TASKID" />
+                <ScalarProperty Name="TASKNAME" ColumnName="TASKNAME" />
+                <ScalarProperty Name="TASKDESCRIPTION" ColumnName="TASKDESCRIPTION" />
+                <ScalarProperty Name="TASKSTATUS" ColumnName="TASKSTATUS" />
+                <ScalarProperty Name="FK_USER_TASK" ColumnName="FK_USER_TASK" />
+                <ScalarProperty Name="FK_TASKLIST_TASK" ColumnName="FK_TASKLIST_TASK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TASKLIST">
+            <EntityTypeMapping TypeName="RESTfulDBModel.TASKLIST">
+              <MappingFragment StoreEntitySet="TASKLIST">
+                <ScalarProperty Name="TASKLISTID" ColumnName="TASKLISTID" />
+                <ScalarProperty Name="TASKLISTNAME" ColumnName="TASKLISTNAME" />
+                <ScalarProperty Name="TASKLISTDESCRIPTION" ColumnName="TASKLISTDESCRIPTION" />
+                <ScalarProperty Name="FK_USER_TASKLIST" ColumnName="FK_USER_TASKLIST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USER_ACCOUNT">
+            <EntityTypeMapping TypeName="RESTfulDBModel.USER_ACCOUNT">
+              <MappingFragment StoreEntitySet="USER_ACCOUNT">
+                <ScalarProperty Name="USERACCOUNTID" ColumnName="USERACCOUNTID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="USERPASSWORD" ColumnName="USERPASSWORD" />
+                <ScalarProperty Name="USERIMAGE" ColumnName="USERIMAGE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,65 +11,77 @@ namespace RESTful_API.Controller
 {
     public class UsersController : ApiController
     {
-        List<User> userLists = new List<User>
-        {
-            new User{id = 1, name = "list 1" },
-            new User{id = 2, name = "list 2"},
-            new User{id = 3, name = "list 3"}
-        };
-
-        // GET: api/list/1
+        // GET: api/user/1
         [HttpGet]
         public User GetUser(int id)
         {
-            return userLists.FirstOrDefault(t => t.id == id);
+            User user = new User();
+            return user.GetUser(id);
         }
 
-        //GET: api/list
+        //GET: api/user
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUsers()
         {
-            return userLists;
+            User user = new User();
+            List<User> users = user.GetUserList();
+            return users;
         }
 
-        // POST: api/list
+        // POST: api/user
         [HttpPost]
-        public IHttpActionResult AddNewUser([FromBody] User task)
+        public IHttpActionResult Register([FromBody] User user)
         {
-            userLists.Add(task);
-            return Ok(userLists);
-        }
+            User userObj = new User();
 
-        // PUT: api/list/3
-        [HttpPut]
-        public IHttpActionResult UpdateUser(int Id, string name)
-        {
-            User newUser = userLists.FirstOrDefault(u => u.id == Id);
-            if (newUser == null)
+            string hashedPassword = SecurePasswordHasher.Hash(user.UserPassword);
+            user.UserPassword = hashedPassword;
+
+            bool created = userObj.AddUser(user);
+            if (created)
             {
-                return NotFound();
+                return StatusCode(HttpStatusCode.Created);
             }
             else
             {
-                newUser.name = name;
-                return Ok(userLists);
+                return InternalServerError();
             }
         }
 
-        // DELETE: api/list/2
+        // PUT: api/user/3
+        [HttpPut]
+        public IHttpActionResult UpdateUser(int Id, [FromBody]User newUserObj)
+        {
+            User user = new User();
+            if(Id < 0)
+            {
+                return StatusCode(HttpStatusCode.NotFound);
+            }
+            else if(user.UpdateUser(Id, newUserObj))
+            {
+                return StatusCode(HttpStatusCode.OK);
+            }
+            else
+            {
+                return StatusCode(HttpStatusCode.InternalServerError);
+            }
+            
+        }
+
+        // DELETE: api/user/2
         [HttpDelete]
         public IHttpActionResult DeleteUser(int id)
         {
-            User userDelete = userLists.FirstOrDefault(t => t.id == id);
-            if (userDelete == null)
+            User user = new User();
+            if (user.DeleteUser(user.GetUser(id)))
             {
-                return NotFound();
+                return Ok();
             }
             else
             {
-                userLists.Remove(userDelete);
-                return Ok(userLists);
+                return StatusCode(HttpStatusCode.NotFound);
             }
+
         }
     }
 }
