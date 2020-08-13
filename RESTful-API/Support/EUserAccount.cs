@@ -27,10 +27,10 @@ namespace RESTful_API.Support
         {
             using (var db = new RESTfulDBEntities())
             {
-                return db.USER_ACCOUNT
-                    .Include(a => a.TASKLIST)
-                    .Include(a => a.TASK)
-                    .FirstOrDefault(x => x.USERACCOUNTID == userAccountId);
+                db.USER_ACCOUNT.Load();
+                db.TASKLIST.Load();
+                var query=db.USER_ACCOUNT.FirstOrDefault(x => x.USERACCOUNTID == userAccountId);
+                return query;
             }
         }
         public List<USER_ACCOUNT> List()

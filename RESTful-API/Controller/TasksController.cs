@@ -22,7 +22,7 @@ namespace RESTful_API.Controller
         [HttpGet]
         public IEnumerable<Task> GetTasks()
         {
-            return new List<Task>().GetTasksList();
+            return new Task().GetTasksList();
         }
 
         // POST: api/task

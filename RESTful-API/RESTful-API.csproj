@@ -104,7 +104,7 @@
   <ItemGroup>
     <Compile Include="Configuration\AutoMapper.cs" />
     <Compile Include="Configuration\RESTfulAPIConfig.cs" />
-    <Compile Include="Controller\ListsController.cs" />
+    <Compile Include="Controller\TaskListsController.cs" />
     <Compile Include="Controller\TasksController.cs" />
     <Compile Include="Controller\UsersController.cs" />
     <Compile Include="DataSource.cs" />

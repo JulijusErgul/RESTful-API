@@ -20,10 +20,10 @@ namespace RESTful_API.Controller
 
         //GET: api/list
         [HttpGet]
-        public IEnumerable<TaskList> GetTaskLists(int userId)
+        public IEnumerable<TaskList> GetTaskLists()
         {
             
-            return new TaskList().GetTaskLists(userId);
+            return new TaskList().GetTaskLists();
         }
 
         // POST: api/list

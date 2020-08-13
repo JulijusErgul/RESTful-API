@@ -13,8 +13,8 @@ namespace RESTful_API.Model
         public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public bool TaskStatus { get; set; }
-        public int ListId { get; set; }
-        public int UserId { get; set; }
+        public int fk_tasklist_task { get; set; }
+        public int fk_user_task { get; set; }
 
         static private ETask _eTask = new ETask();
 

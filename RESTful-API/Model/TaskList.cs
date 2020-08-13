@@ -14,7 +14,7 @@ namespace RESTful_API.Model
         [Required]
         public string TaskListName { get; set; }
         public string TaskListDescription { get; set; }
-        public int UserID { get; set; }
+        public int fk_user_tasklist { get; set; }
         public List<Task> Tasks { get; set; }
 
         static private ETaskList _eTaskList = new ETaskList();
@@ -26,9 +26,9 @@ namespace RESTful_API.Model
             return taskListObj;
         }
 
-        public List<TaskList> GetTaskLists(int userAccountID)
+        public List<TaskList> GetTaskLists()
         {
-            return Mapper.Map<List<TASKLIST>, List<TaskList>>(_eTaskList.List(userAccountID));
+            return Mapper.Map<List<TASKLIST>, List<TaskList>>(_eTaskList.List());
         }
 
         public bool AddTaskList(TaskList taskListObj)

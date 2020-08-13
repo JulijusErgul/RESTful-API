@@ -32,14 +32,14 @@ namespace RESTful_API.Support
             }
         }
 
-        public List<TASKLIST> List(int userAccountID)
+        public List<TASKLIST> List()
         {
             using(var db = new RESTfulDBEntities())
             {
                 db.TASK.Load();
                 var query = db.TASKLIST
                             .OrderBy(x => x.TASKLISTID)
-                            .Where(x => x.USER_ACCOUNT.USERACCOUNTID == userAccountID);
+                            /*.Where(x => x.USER_ACCOUNT.USERACCOUNTID == userAccountID)*/;
                 return query.ToList();
             }
         }

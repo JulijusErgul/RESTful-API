@@ -13,7 +13,7 @@ namespace RESTful_API.Model
 {
     public class User
     {
-        public int UserId { get; set; }
+        public int UserAccountId { get; set; }
         [Required]
         public string UserName { get; set; }
         [Required]
