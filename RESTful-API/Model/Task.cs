@@ -32,17 +32,36 @@ namespace RESTful_API.Model
 
         public bool AddTask(Task task)
         {
-            
+            bool created = _eTask.Add(Mapper.Map<TASK>(task));
+            if (created)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        internal bool UpdateTask(int id, Task newTaskObj)
+        public bool UpdateTask(int id, Task newTaskObj)
         {
-            throw new NotImplementedException();
+            Task tempTask = new Task().GetTask(id);
+            tempTask = newTaskObj;
+
+            bool updated = _eTask.Update(Mapper.Map<TASK>(tempTask));
+            if (updated)
+                return true;
+            else
+                return false;
         }
 
-        internal bool DeleteTask(Task.GetTask getTask)
+        public bool DeleteTask(Task taskObj)
         {
-            throw new NotImplementedException();
+            bool deleted = _eTask.Delete(Mapper.Map<TASK>(taskObj));
+            if (deleted)
+                return true;
+            else
+                return false;
         }
     }
 }
